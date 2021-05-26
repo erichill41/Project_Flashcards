@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { readCard } from "../utils/api/index";
 
@@ -6,7 +6,7 @@ import CardForm from "./CardForm";
 
 function EditCard({ loading, setLoading }) {
     const { cardId, deckId } = useParams();
-    const initialCardData = {};
+    const [initialCardData, setInitialCardData] = useState({});
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -14,10 +14,7 @@ function EditCard({ loading, setLoading }) {
         async function loadCardData() {
             try {
                 const currentCard = await readCard(cardId, abortController.signal);
-                initialCardData.id = currentCard.id;
-                initialCardData.front = currentCard.front;
-                initialCardData.back = currentCard.back;
-                initialCardData.deckId = currentCard.deckId;
+                setInitialCardData(currentCard);
             } catch (error) {
                 if (error.name === "AbortError") {
                     console.log("loadCardData Aborted");

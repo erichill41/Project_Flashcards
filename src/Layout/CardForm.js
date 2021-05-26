@@ -26,7 +26,7 @@ function CardForm({ initialCardData, setLoading }) {
         }
         loadCardData();
         return () => abortController.abort();
-    }, [url]);
+    }, []);
 
     const handleChange = ({ target }) => {
         setCardData({
@@ -68,7 +68,8 @@ function CardForm({ initialCardData, setLoading }) {
                     name="front"
                     rows="3"
                     onChange={handleChange}
-                    value={initialCardData.front}
+                    value={cardData.front}
+                    placeholder={initialCardData.front}
                 />
 
                 <label htmlFor="back"> Back </label>
@@ -78,7 +79,8 @@ function CardForm({ initialCardData, setLoading }) {
                     name="back"
                     rows="3"
                     onChange={handleChange}
-                    value={initialCardData.back}
+                    value={cardData.back}
+                    placeholder={initialCardData.back}
                 />
 
                 <Button onClick={() => {
