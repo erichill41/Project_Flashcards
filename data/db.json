@@ -1,0 +1,57 @@
+{
+  "decks": [
+    {
+      "name": "React Router",
+      "description": "React Router is a collection of navigational components that compose declaratively with your application.",
+      "id": 2
+    },
+    {
+      "name": "Rendering in React",
+      "description": "Goes over how to render different items in React",
+      "id": 3
+    },
+    {
+      "name": "Test Deck",
+      "description": "This is to test the create deck form\n",
+      "id": 4
+    }
+  ],
+  "cards": [
+    {
+      "id": 4,
+      "front": "Testing Edit Card",
+      "back": "All paths. A route with no path matches all URL's",
+      "deckId": 2
+    },
+    {
+      "front": "What does <Switch> do?",
+      "back": "Renders the first matching child <Route> ",
+      "deckId": 2,
+      "id": 5
+    },
+    {
+      "deckId": 2,
+      "front": "Test",
+      "back": "Test",
+      "id": 6
+    },
+    {
+      "id": 7,
+      "front": "Game of Thrones",
+      "back": "Game of Thrones",
+      "deckId": 4
+    },
+    {
+      "deckId": 4,
+      "front": "Test card 2",
+      "back": "Test card 2",
+      "id": 8
+    },
+    {
+      "deckId": 4,
+      "front": "Test card 3",
+      "back": "Test card 3",
+      "id": 9
+    }
+  ]
+}
