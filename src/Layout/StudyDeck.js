@@ -17,7 +17,7 @@ function StudyDeck({ currentDeck, loading }){
                     <li class="breadcrumb-item active" aria-current="page"> Study Deck </li>
                 </ol>
             </nav>
-            <h2> Study Deck: {name} </h2>
+            <h2> {name} </h2>
             <Card currentDeck={currentDeck} loading={loading} />
         </div>
     );
@@ -29,7 +29,7 @@ function StudyDeck({ currentDeck, loading }){
     if (cards.length < 3) {
         return (
             <div>
-                <AddMoreCards cards={ cards } />
+                <AddMoreCards currentDeck ={ currentDeck } cards={ cards } />
             </div>
         );
     }

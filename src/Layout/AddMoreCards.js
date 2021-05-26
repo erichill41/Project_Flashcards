@@ -3,15 +3,15 @@ import { Link, useParams } from "react-router-dom";
 
 import { Button } from "./Buttons";
 
-function AddMoreCards({ cards }) {
+function AddMoreCards({ currentDeck, cards }) {
     const { deckId } = useParams();
 
     return (
         <div>
-            <h3> You Need More Cards </h3>
+            <h3> { currentDeck.name } </h3>
+            <h2> Not enough cards. </h2>
             <p>
                 You need at least 3 cards to study. There are { cards.length } cards in this deck.
-                Click below to add more cards.
             </p>
             <Link to={`/decks/${deckId}/cards/new`}>
                 <Button> Add More Cards </Button>
