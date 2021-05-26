@@ -68,7 +68,7 @@ function CardForm({ initialCardData, setLoading }) {
                     name="front"
                     rows="3"
                     onChange={handleChange}
-                    value={cardData.front}
+                    value={initialCardData.front}
                 />
 
                 <label htmlFor="back"> Back </label>
@@ -78,7 +78,7 @@ function CardForm({ initialCardData, setLoading }) {
                     name="back"
                     rows="3"
                     onChange={handleChange}
-                    value={cardData.back}
+                    value={initialCardData.back}
                 />
 
                 <Button onClick={() => {
