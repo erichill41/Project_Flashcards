@@ -42,7 +42,7 @@ function CreateDeck() {
                 type="text"
                 name="name"
                 onChange={handleChange}
-                className="form-control"
+                className="form-control mb-3"
                 value={formData.name}
                 placeholder="Name of Deck"
                 />
@@ -54,13 +54,13 @@ function CreateDeck() {
                 id="deckDescription"
                 name="description"
                 onChange={handleChange}
-                className="form-control"
+                className="form-control mb-3"
                 value={formData.description}
                 rows="4"
                 placeholder="Description of deck contents"
                 />
-                <button type="button" onClick={() => history.push("/")}>Cancel</button>
-                <button type="submit">Submit</button>
+                <button type="button" onClick={() => history.push("/")} className="btn btn-primary mr-2">Cancel</button>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     );

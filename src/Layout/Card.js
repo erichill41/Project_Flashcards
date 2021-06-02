@@ -1,49 +1,93 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Button } from "./Buttons";
+import React from "react";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
-function Card({ currentDeck, loading }) {
-    const { cards } = currentDeck;
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [front, setFront] = useState(true);
+function Card({ currentCards }) {
     const history = useHistory();
+    const deckId = useParams();
 
-    const nextCardHandler = () => {
-        if (currentIndex < cards.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            setFront(true);
-        } else {
-            if (window.confirm("Restart cards?\n\nClick 'Cancel' to return to the home page")) {
-                setCurrentIndex(0);
-                setFront(true);
-            } else {
-                history.push("/");
-            }
+    const [cardCount, setCardCount] = useState(1);
+    const [sideOfCard, setSideOfCard] = useState(null);
+    const [studyCardCount, setStudyCardCount] = useState(0);
+    const [studyCard, setStudyCard] = useState(null);
+    const sortedCards = currentCards.sort((a, b) => a.id - b.id);
+
+    useEffect(() => {
+        if(currentCards.length > 2){
+            setSideOfCard(true);
         }
-    };
-
-    const turnCardHandler = () => {
-        setFront(!front);
-    };
-
-    const renderPage = (
-        <div className="card border-primary mb-3">
-            <div className="card-body">
-                <h4 className="card-title"> Card {currentIndex + 1} of {cards.length} </h4>
-                <p className="card-text">
-                    {front ? cards[currentIndex].front : cards[currentIndex].back}
-                </p>
-                <Button onClick={turnCardHandler}> Turn Card </Button>
-                {!front ? <Button onClick={nextCardHandler}> Next Card </Button>: null}
-            </div>
-        </div>
-    );
-
-    if (loading) {
-        return <p> Loading Card... </p>
-    } else {
-        return <div> {renderPage} </div>
+        setStudyCard(sortedCards[studyCardCount])
+    }, [currentCards])
+    
+    const handleFlip = (event) => {
+        event.preventDefault()
+        setSideOfCard(!sideOfCard)
     }
-}
 
+
+    const handleNext = (e) => {
+        e.preventDefault()
+        setSideOfCard(!sideOfCard)
+        setCardCount((current) => current + 1)
+        setStudyCardCount((current) => current + 1)
+        setStudyCard(sortedCards[studyCardCount + 1])
+        if(currentCards.length <= cardCount){
+            if(window.confirm("Restart Cards?")){
+                setCardCount(1);
+                setStudyCardCount(0);
+                setStudyCard(sortedCards[studyCardCount]);
+                history.push(`/decks/${deckId}/study`)
+            } else {history.push("/")}
+        }
+    }
+
+    const handleAddCards = (event) => {
+        event.preventDefault()
+        history.push(`/decks/${deckId}/cards/new`)
+    }
+
+    if (currentCards) {
+        if ((sideOfCard === true) && studyCard){ 
+            return (
+                <div className="card border-primary mb-3">
+                    <div className="card-body">
+                        <h4 className="card-title"> Card {cardCount} of {currentCards.length}</h4>
+                        <p className="card-text"> {studyCard.front} </p>
+                        <br />
+                        <button onClick={handleFlip} className="btn btn-primary">Flip</button>
+                    </div>
+                </div>
+            )
+        }
+        if ((sideOfCard === false) && studyCard){
+            return (
+                <div className="card border-primary mb-3">
+                    <div className="card-body">
+                        <h4 className="card-title">Card {cardCount} of {currentCards.length}</h4>
+                        <p className="card-text"> {studyCard.back} </p>
+                        <br />
+                        <button onClick={handleFlip} className="btn btn-primary mr-3">Flip</button>
+                        <button onClick={handleNext} className="btn btn-primary mr-3">Next</button> 
+                    </div> 
+                </div>
+            );
+        }
+        else {
+            return (
+                <div className="card border-primary">
+                    <div className="card-body mb-3">
+                        <h4 className="card-title">Not enough cards.</h4>
+                        <p className="card-text mb-3">You need at least 3 cards to study. There are {currentCards.length} in this deck.</p>
+                        
+                    </div>
+                    <button onClick={handleAddCards} className="btn btn-primary"> + Add Cards </button>
+                </div>
+            )
+        }
+    }
+    return (
+        <p>Loading...</p>
+    )
+}
 export default Card;
+

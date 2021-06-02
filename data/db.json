@@ -11,8 +11,8 @@
       "id": 3
     },
     {
-      "name": "Test Deck",
-      "description": "This is to test the create deck form\n",
+      "name": "Here is a new deck",
+      "description": "This deck is to test the re-formatted Create Deck form",
       "id": 4
     }
   ],
@@ -36,22 +36,40 @@
       "id": 6
     },
     {
-      "id": 7,
-      "front": "Game of Thrones",
-      "back": "Game of Thrones",
-      "deckId": 4
+      "front": "New card test",
+      "back": "New card test, back",
+      "deckId": 2,
+      "id": 7
     },
     {
-      "deckId": 4,
-      "front": "Test card 2",
-      "back": "Test card 2",
+      "front": "Front side of card",
+      "back": "Back side of card",
+      "deckId": 2,
       "id": 8
     },
     {
-      "deckId": 4,
-      "front": "Test card 3",
-      "back": "Test card 3",
+      "front": "Front side of card",
+      "back": "Back side of card",
+      "deckId": 3,
       "id": 9
+    },
+    {
+      "front": "Front side of card 2",
+      "back": "Back side of card 2",
+      "deckId": 3,
+      "id": 10
+    },
+    {
+      "front": "Front side of card 3",
+      "back": "Back side of card 3",
+      "deckId": 3,
+      "id": 11
+    },
+    {
+      "front": "Front side of card",
+      "back": "Back side of card",
+      "deckId": 4,
+      "id": 12
     }
   ]
 }

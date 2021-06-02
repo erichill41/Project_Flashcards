@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route, useParams } from "react-router-dom";
-import { readDeck } from "../utils/api/index";
+import { Link, useParams, useHistory, useRouteMatch } from "react-router-dom";
+import { readDeck, deleteCard, deleteDeck } from "../utils/api/index";
 
-import CreateCard from "./CreateCard";
-import EditDeck from "./EditDeck";
-import EditCard from "./EditCard";
-import ViewDeck from "./ViewDeck";
-import StudyDeck from "./StudyDeck";
-import NotFound from "./NotFound";
+import { Button } from "./Button";
 
-function Deck({ loading, setLoading }) {
+function Deck() {
     const { deckId } = useParams();
+    const history = useHistory();
+    const { url } = useRouteMatch();
     const [ currentDeck, setCurrentDeck ] = useState(undefined);
+    const [currentCards, setCurrentCards] = useState(undefined);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -20,56 +18,80 @@ function Deck({ loading, setLoading }) {
             try {
                 const deckToSet = await readDeck(deckId, abortController.signal);
                 setCurrentDeck(deckToSet);
+                const { cards } = deckToSet;
+                setCurrentCards(cards);
             } catch (error) {
-                if (error.name === "AbortError") {
-                    console.log("loadCurrentDeck Aborted");
-                } else {
-                    throw error;
-                }
+                console.log("loadCurrentDeck Aborted");
             }
         }
         loadCurrentDeck();
-        setLoading(false);
         return () => abortController.abort();
-    }, [ deckId, loading ]);
+    }, [deckId]);
 
 
-// todo: set route paths to use params variable ${deckId} so they are followed correctly to render the correct page
-// current render shows not found when any button is clicked 
-
-
-    if (currentDeck) {
+    if (currentDeck && currentCards) {
         return (
             <div>
-                <Switch>
-                    <Route exact path="/decks/:deckId">
-                        <ViewDeck currentDeck={currentDeck} loading={loading} setLoading={setLoading} />
-                    </Route>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><Link to="/">Home</Link></li>
+                        <li class="breadcrumb-item active" aria-current="page">View Deck</li>
+                    </ol>
+                </nav>
+                <div> 
+                    <h2> { currentDeck.name } </h2>
+                    <h4> { currentDeck.description } </h4>
+                    <Link to={`${url}/edit`}>
+                        <Button> Edit Deck </Button>
+                    </Link>
+                    <Link to={`${ url }/study`}>
+                        <Button> Study Deck </Button>
+                    </Link>
+                    <Link to={`${ url }/cards/new`}>
+                        <Button> Add Cards </Button>
+                    </Link>
+                    <button className="btn btn-danger" onClick={() => {
+                        if(window.confirm("Delete this deck?")) {
+                            deleteDeck(currentDeck.id);
+                            history.push("/");
+                        }}}>
+                        Delete
+                    </button>
+                </div>
 
-                    <Route path="/decks/:deckId/edit">
-                        <EditDeck currentDeck={currentDeck} loading={loading} setLoading={setLoading} />
-                    </Route>
+                <div>
+                        {currentCards.map((card) => (
+                            <div key={card.id}>
+                                <div className="card border-primary mb-3">
+                                    <div className="card-body">
+                                        <h4 className="card-text text-danger"> Front </h4>
+                                        <p className="card-text"> {card.front} </p>
+                                <br/>
+                                    <h4 className="card-text text-danger"> Back </h4>
+                                    <p className="card-text"> {card.back} </p>
 
-                    <Route path="/decks/:deckId/cards/new">
-                        <CreateCard currentDeck={currentDeck} loading={loading} setLoading={setLoading} />
-                    </Route>
-
-                    <Route path="/decks/:deckId/cards/:cardId/edit">
-                        <EditCard currentDeck={currentDeck} loading={loading} setLoading={setLoading} />
-                    </Route>
-
-                    <Route path="/decks/:deckId/study">
-                        <StudyDeck currentDeck={currentDeck} loading={loading} />
-                    </Route>
-                </Switch>
+                                    <Link to={`/decks/${currentDeck.id}/cards/${card.id}/edit`}>
+                                        <Button> Edit Card </Button>
+                                    </Link>
+                                    <button className="btn btn-danger" onClick={() => {
+                                        if(window.confirm("Delete this card?")) {
+                                            deleteCard(`${card.id}`);
+                                            history.push(`/decks/${deckId}`)
+                                        }}}> 
+                                        Delete Card 
+                                    </button>
+                                    </div>
+                                </div>
+                            
+                                
+                                
+                            </div>
+                        ))}
+                </div>
             </div>
         );
     } else {
-        return (
-            <div>
-                <NotFound />
-            </div>
-        );
+        return <p> Loading... </p>
     }
 }
 
