@@ -14,6 +14,11 @@
       "name": "Here is a new deck",
       "description": "This deck is to test the re-formatted Create Deck form",
       "id": 4
+    },
+    {
+      "name": "Showing Haritsa",
+      "description": "Showing Haritsa how to do this\n",
+      "id": 5
     }
   ],
   "cards": [
