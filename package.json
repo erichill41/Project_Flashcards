@@ -1,6 +1,7 @@
 {
   "name": "project-flashcards",
   "version": "0.1.0",
+  "proxy":"https://project-flashcards-jmh688uee-erichill41.vercel.app/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
